@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 import json
 
 import main
@@ -6,8 +6,8 @@ import main
 app = Flask(__name__)
 
 @app.route("/")
-def hello():
-    return "Hello world!"
+def index():
+    return render_template("index.html")
 
 @app.route('/search/<name>')
 def search(name):
