@@ -4,40 +4,44 @@ import requests
 
 bib   = "https://bibliotheques.paris.fr/"
 
-r1 = requests.get(bib+"Default/search.aspx")
-print(r1.status_code, r1.reason)
-
-def search(s):
+def search_book(search_str):
+    requests.get(bib+"Default/search.aspx")
+#    print(r1.status_code, r1.reason)
     data = {
         "query": {
             "Page":0,
             "PageRange":3,
-            "QueryString":s,
+            "QueryString":search_str,
             "ResultSize":100,
             "ScenarioCode":"DEFAULT",
             "SearchContext":0,
             "SearchLabel":"",
         }
     }
-    r3 = requests.post(bib+"Default/Portal/Recherche/Search.svc/Search",json=data)
-    print(r3.status_code, r3.reason)
+    r = requests.post(bib+"Default/Portal/Recherche/Search.svc/Search",json=data)
+#    print(r3.status_code, r3.reason)
+#    res = search['d']['Results'][0]['Resource']
+#    print(search['d']['Results'][1]['Resource'])
 
-    search = r3.json()
-    for r in search['d']['Results']:
-        print(r['Resource']['RscId'],r['Resource']['Ttl'])
-    res = search['d']['Results'][0]['Resource']
-    print(search['d']['Results'][1]['Resource'])
+    res = r.json()
+    return [ (r['Resource']['RscId'], r['Resource']['Ttl']) for r in res['d']['Results'] ]
 
-    data = {  "Record":{ "RscId":res['RscId'], "Docbase":"SYRACUSE", "PazPar2Id":"0_OFFSET_0"}  }
-    r4 = requests.post(bib+"Default/Portal/Services/ILSClient.svc/GetHoldings",json=data)
-    print(r4.status_code, r4.reason)
+def get_site_infos(s):
+    res = { k : v for k,v in s.items() if k in ['Site','IsAvailable','HoldingId']}
+    for e in s['Other']:
+        if e['Key'] == 'InstitutionWording':
+            res['Name'] = e['Value']
+        elif e['Key'] == 'SiteLabelLink':
+            res['Link'] = e['Value']
+    return res
 
-    a = r4.json()
+def get_holding(rsc_id):
+    requests.get(bib+"Default/search.aspx")
+#    print(r1.status_code, r1.reason)
 
-    for e in a['d']['Holdings']:
-        if e['Statut'] == 'En rayon':
-            print(e['Site'])
+    data = {  "Record":{ "RscId":rsc_id, "Docbase":"SYRACUSE", "PazPar2Id":"0_OFFSET_0"}  }
+    r = requests.post(bib+"Default/Portal/Services/ILSClient.svc/GetHoldings",json=data)
+#    print(r.status_code, r.reason)
+    res = r.json()
 
-
-search('thorgal+tome+01')
-
+    return [ get_site_infos(e) for e in res['d']['Holdings'] if e['IsAvailable'] ]
