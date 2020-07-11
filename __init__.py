@@ -1,6 +1,6 @@
 from flask import Flask
 
-import main
+import Main
 
 app = Flask(__name__)
 
@@ -10,7 +10,7 @@ def hello():
 
 @app.route('/search/<name>')
 def search(name):
-   return main.search(name)
+   return Main.search(name)
 
 if __name__ == "__main__":
     app.run(debug=True)
