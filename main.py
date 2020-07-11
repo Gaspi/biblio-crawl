@@ -4,6 +4,10 @@ import requests
 
 bib   = "https://bibliotheques.paris.fr/"
 
+def get_book_infos(b):
+    return {'RscId' : b['Resource']['RscId'],
+            'Ttl'   : b['Resource']['Ttl'] }
+
 def search_book(search_str):
     requests.get(bib+"Default/search.aspx")
 #    print(r1.status_code, r1.reason)
@@ -22,9 +26,8 @@ def search_book(search_str):
 #    print(r3.status_code, r3.reason)
 #    res = search['d']['Results'][0]['Resource']
 #    print(search['d']['Results'][1]['Resource'])
-
     res = r.json()
-    return [ (r['Resource']['RscId'], r['Resource']['Ttl']) for r in res['d']['Results'] ]
+    return [ get_book_infos(b) for b in res['d']['Results'] ]
 
 def get_site_infos(s):
     res = { k : v for k,v in s.items() if k in ['Site','IsAvailable','HoldingId']}
@@ -38,10 +41,11 @@ def get_site_infos(s):
 def get_holding(rsc_id):
     requests.get(bib+"Default/search.aspx")
 #    print(r1.status_code, r1.reason)
-
     data = {  "Record":{ "RscId":rsc_id, "Docbase":"SYRACUSE", "PazPar2Id":"0_OFFSET_0"}  }
     r = requests.post(bib+"Default/Portal/Services/ILSClient.svc/GetHoldings",json=data)
 #    print(r.status_code, r.reason)
     res = r.json()
-
     return [ get_site_infos(e) for e in res['d']['Holdings'] if e['IsAvailable'] ]
+
+def get_holdings(rsc_id):
+    return [ get_holding(e) for e in rsc_id ]
