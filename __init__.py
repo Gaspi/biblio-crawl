@@ -1,4 +1,5 @@
 from flask import Flask
+import json
 
 import main
 
@@ -10,11 +11,11 @@ def hello():
 
 @app.route('/search/<name>')
 def search(name):
-   return main.search_book(name)
+   return json.dumps(main.search_book(name))
 
 @app.route('/locate/<book>')
 def locate(book):
-   return main.get_holding(book)
+   return json.dumps(main.get_holding(book))
 
 if __name__ == "__main__":
     app.run(debug=True)
