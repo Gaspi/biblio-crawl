@@ -1,7 +1,6 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'index.css') }}">
-    <script type = "text/javascript" src="{{ url_for('static', filename = 'animate.js') }}" ></script>
   </head>
 
   <body>
@@ -10,7 +9,7 @@
       <h2> Recherche </h2>
       <br/>
       <input type="text" id="search" name="fname">
-      <input type = "button" onclick = "sayHello()" value = "Go !" />
+      <input type = "button" onclick = "search()" value = "Go !" />
       <br/>
       <ul id="results-list"> </ul>
     </div>
@@ -18,8 +17,14 @@
       <h2> Panier    </h2>
       <br/>
       <input type = "button" onclick = "generate()" value = "Chercher bibliothèques" />
+      <a href="/" rel="noopener noreferrer" target="_blank" id="standalone"> </a>
       <ul id="panier"> </ul>
     </div>
   </div>
+  <div class="row">
+  <table id="report">
+  </table>
+  </div>
+  <script type = "text/javascript" src="{{ url_for('static', filename = 'animate.js') }}" ></script>
   </body>
 </html>

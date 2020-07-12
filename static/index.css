@@ -9,3 +9,16 @@
   display: table;
   clear: both;
 }
+
+#report td {
+  text-align:center;
+}
+
+.tickyes {
+/* font-size: 150%;*/
+  color : green;
+}
+.tickno {
+/* font-size: 150%;*/
+  color : red;
+}

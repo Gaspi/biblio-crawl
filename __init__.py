@@ -14,7 +14,12 @@ def search():
     query = request.args.get('q')
     return json.dumps(main.search_book(query))
 
-@app.route('/locate', methods = ['GET'])
+@app.route('/ids', methods = ['GET'])
+def ids():
+    query = request.args.get('q')
+    return json.dumps(main.get_imagelinks(query.split(',')))
+
+@app.route('/img', methods = ['GET'])
 def locate():
     query = request.args.get('q')
     return json.dumps(main.get_holding(query))
