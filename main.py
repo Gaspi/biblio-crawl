@@ -46,7 +46,7 @@ def search_book(search_str):
     res = r.json()
 
     imagelinks={}
-    soup = BeautifulSoup(res['d']['HtmlResult'], features="lxml")
+    soup = BeautifulSoup(res['d']['HtmlResult'], features="html5lib")
     for c in soup.findAll("div",{ "class":"notice_container"}):
         v = c.find("div",{"class":"vignette_document"}).find("a")
         bookid  = re.findall("SYRACUSE/(.*)/",v['href'])
