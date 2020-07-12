@@ -16,7 +16,7 @@ def get_book_infos(imagelinks,b):
 def get_imagelink(rscid):
     link = bib + "Default/doc/SYRACUSE/" + str(rscid)
     r = requests.get(link)
-    soup = BeautifulSoup(r.text, features="lxml")
+    soup = BeautifulSoup(r.text, features="html5lib")
     title = soup.find("div", {'id':'notice_longue_description'}).find('h2').text
     bookimg = re.findall("://(.*)/MEDIUM?",soup.find("img")['src'])
     img = bookimg[0] if len(bookimg)>0 else None
