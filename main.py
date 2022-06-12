@@ -3,7 +3,7 @@
 import requests, re
 from bs4 import BeautifulSoup
 
-bib   = "https://bibliotheques.paris.fr/"
+bib = "https://bibliotheques.paris.fr/"
 
 def get_book_infos(imagelinks,b):
     bookid=b['Resource']['RscId']

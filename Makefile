@@ -1,11 +1,10 @@
-
 INSTALL_FOLDER=/var/www/FLASK/bibli
 APACHE_PATH=/etc/apache2
 PORT=8080
 LOG_FOLDER=$(INSTALL_FOLDER)/logs
 
 LOCAL_SRC = $(shell find ./ -type f -name '*.js' -o -name '*.css' -o -name '*.html' -o -name '*.py')
-DIST_SRC = $(patsubst ./%, $(INSTALL_FOLDER)/%, $(LOCAL_SQL))
+DIST_SRC = $(patsubst ./%, $(INSTALL_FOLDER)/%, $(LOCAL_SRC))
 
 
 # Compile with "make Q=" to display the commands that are run.
