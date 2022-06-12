@@ -2,13 +2,13 @@
 
 ## Installation WSGI
 
-Créer un répertoire et y cloner le projet
+Cloner le projet
 ```bash
 git clone https://github.com/Gaspi/biblio-crawl.git
 cd biblio-crawl
 ```
 
-Configurer les chemins d'installation du fichier `Makefile` puis
+Configurer les chemins d'installation du fichier `Makefile` puis installer:
 ```bash
 sudo make Q=
 ```
