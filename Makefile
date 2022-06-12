@@ -15,31 +15,32 @@ Q = @
 all: install
 
 install: $(DIST_SRC) $(APACHE_PATH)/sites-available/bibli.conf $(INSTALL_FOLDER)/bibli.wsgi
-	$(Q)mkdir -m 775 -p $(LOG_FOLDER)
-	$(Q)rm -rf $(LOG_FOLDER)/*
+	$(Q)mkdir -m 775 -p "$(LOG_FOLDER)"
+	$(Q)rm -rf "$(LOG_FOLDER)/*"
 	$(Q)a2ensite bibli.conf
 	$(Q)service apache2 reload
 	$(Q)echo "Installation terminée !"
 
 uninstall:
-	$(Q)test -f $(APACHE_PATH)/sites-enabled/bibli.conf && a2dissite bibli.conf && service apache2 reload || echo "No previous conf, no need to touch apache2"
-	$(Q)rm -f $(APACHE_PATH)/sites-available/bibli.conf
-	$(Q)rm -rf $(INSTALL_FOLDER)
-	$(Q)rm -rf $(LOG_FOLDER)
+	$(Q)test -f "$(APACHE_PATH)/sites-enabled/bibli.conf" && a2dissite bibli.conf && service apache2 reload || echo "No previous conf, no need to touch apache2"
+	$(Q)rm -f "$(APACHE_PATH)/sites-available/bibli.conf"
+	$(Q)rm -rf "$(INSTALL_FOLDER)"
+	$(Q)rm -rf "$(LOG_FOLDER)"
 	$(Q)echo "Désinstallation terminée !"
 
 reinstall: uninstall install
 
 $(INSTALL_FOLDER)/%: %
 	$(Q)mkdir -m 775 -p "$(@D)"
-	$(Q)cp $< $@
-	$(Q)chmod a+rx $@
+	$(Q)cp "$<" "$@"
+	$(Q)chmod a+rx "$@"
 
 $(APACHE_PATH)/sites-available/bibli.conf: bibli.conf
-	$(Q)test -f $(APACHE_PATH)/sites-enabled/bibli.conf && a2dissite bibli.conf && service apache2 reload || echo "No previous conf, no need to touch apache2"
-	$(Q)rm -f $(APACHE_PATH)/sites-available/bibli.conf
+	$(Q)test -f "$(APACHE_PATH)/sites-enabled/bibli.conf" && a2dissite bibli.conf && service apache2 reload || echo "No previous conf, no need to touch apache2"
+	$(Q)rm -f "$(APACHE_PATH)/sites-available/bibli.conf"
 	$(Q)sed "s+\[INSTALL_FOLDER\]+$(INSTALL_FOLDER)+g" bibli.conf | sed "s+\[PORT\]+$(PORT)+g" > $(APACHE_PATH)/sites-available/bibli.conf
 
 $(INSTALL_FOLDER)/bibli.wsgi: bibli.wsgi
-	$(Q)rm -f $(INSTALL_FOLDER)/bibli.wsgi
-	$(Q)sed "s+\[INSTALL_FOLDER\]+$(INSTALL_FOLDER)+g" bibli.wsgi > $(INSTALL_FOLDER)/bibli.wsgi
+	$(Q)mkdir -m 775 -p "$(INSTALL_FOLDER)"
+	$(Q)rm -f "$(INSTALL_FOLDER)/bibli.wsgi"
+	$(Q)sed "s+\[INSTALL_FOLDER\]+$(INSTALL_FOLDER)+g" bibli.wsgi > "$(INSTALL_FOLDER)/bibli.wsgi"
