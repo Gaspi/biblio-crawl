@@ -35,11 +35,11 @@ $(INSTALL_FOLDER)/%: %
 	$(Q)cp $< $@
 	$(Q)chmod a+rx $@
 
-$APACHE_PATH/sites-available/bibli.conf: bibli.conf
+$(APACHE_PATH)/sites-available/bibli.conf: bibli.conf
 	$(Q)test -f $(APACHE_PATH)/sites-enabled/bibli.conf && a2dissite bibli.conf && service apache2 reload
 	$(Q)rm -f $(APACHE_PATH)/sites-available/bibli.conf
-	$(Q)sed "s+\[INSTALL_FOLDER\]+$(INSTALL_FOLDER)+g" bibli.conf | sed "s+\[PORT\]+$(PORT)+g"  > $(APACHE_PATH)/sites-available/bibli.conf
+	$(Q)sed "s+\[INSTALL_FOLDER\]+$(INSTALL_FOLDER)+g" bibli.conf | sed "s+\[PORT\]+$(PORT)+g" > $(APACHE_PATH)/sites-available/bibli.conf
 
-$INSTALL_FOLDER/bibli.wsgi: bibli.wsgi
+$(INSTALL_FOLDER)/bibli.wsgi: bibli.wsgi
 	$(Q)rm -f $(INSTALL_FOLDER)/bibli.wsgi
 	$(Q)sed "s+\[INSTALL_FOLDER\]+$(INSTALL_FOLDER)+g" bibli.wsgi > $(INSTALL_FOLDER)/bibli.wsgi
