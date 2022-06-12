@@ -22,7 +22,7 @@ install: $(DIST_SRC) $(APACHE_PATH)/sites-available/bibli.conf $(INSTALL_FOLDER)
 	$(Q)echo "Installation terminée !"
 
 uninstall:
-	$(Q)test -f $(APACHE_PATH)/sites-enabled/bibli.conf && a2dissite bibli.conf && service apache2 reload
+	$(Q)test -f $(APACHE_PATH)/sites-enabled/bibli.conf && a2dissite bibli.conf && service apache2 reload || echo "No previous conf, no need to touch apache2"
 	$(Q)rm -f $(APACHE_PATH)/sites-available/bibli.conf
 	$(Q)rm -rf $(INSTALL_FOLDER)
 	$(Q)rm -rf $(LOG_FOLDER)
@@ -36,7 +36,7 @@ $(INSTALL_FOLDER)/%: %
 	$(Q)chmod a+rx $@
 
 $(APACHE_PATH)/sites-available/bibli.conf: bibli.conf
-	$(Q)test -f $(APACHE_PATH)/sites-enabled/bibli.conf && a2dissite bibli.conf && service apache2 reload
+	$(Q)test -f $(APACHE_PATH)/sites-enabled/bibli.conf && a2dissite bibli.conf && service apache2 reload || echo "No previous conf, no need to touch apache2"
 	$(Q)rm -f $(APACHE_PATH)/sites-available/bibli.conf
 	$(Q)sed "s+\[INSTALL_FOLDER\]+$(INSTALL_FOLDER)+g" bibli.conf | sed "s+\[PORT\]+$(PORT)+g" > $(APACHE_PATH)/sites-available/bibli.conf
 
