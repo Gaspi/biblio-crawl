@@ -1,4 +1,5 @@
 import json
+import Adafruit_DHT
 from flask import Flask, render_template, request
 import main
 
@@ -23,6 +24,11 @@ def locate():
 @app.route('/report', methods = ['GET'])
 def report():
     return json.dumps(main.get_holdings(request.args.get('q').split(",")))
+
+@app.route('/sensors', methods = ['GET'])
+def sensor():
+    humidity, temperature = Adafruit_DHT.read_retry(11, 4)
+    return json.dumps({'Temperature':temperature, 'Humidity':humidity})
 
 if __name__ == "__main__":
     app.run(debug=True)
